@@ -1,0 +1,107 @@
+interface stack-port 0/1 
+port interface XGigabitEthernet 0/0/3 enable 
+#
+Y
+
+interface stack-port 0/2
+port interface XGigabitEthernet 0/0/4 enable 
+Y
+
+ stack slot 0 priority 200
+ stack slot 0 renumber 1
+
+ 
+ 
+interface Eth-Trunk1
+ description .: Connect to Core Switch :.
+ port link-type trunk
+ port trunk allow vlan all
+ mode lacp
+
+ interface gigabitethernet 0/0/1
+ eth-trunk 1 mode active
+ 
+ 
+ interface Eth-Trunk1
+ description .: Connect to Wireless LAN Controller :.
+ port link-type trunk
+ mode lacp
+#
+interface Eth-Trunk2
+ description .: Connect to Server Farm Switch :.
+ port link-type trunk
+ mode lacp
+#
+interface Eth-Trunk3
+ description .: Connect to  Connect to Server Farm Switch :.
+ port link-type trunk
+ mode lacp
+#
+interface Eth-Trunk4
+ description .: Connect to Access Switch Data 1 :.
+ port link-type trunk
+ mode lacp
+#
+interface Eth-Trunk5
+ description .: Connect to Access Switch Data 2 :.
+ port link-type trunk
+ mode lacp
+#
+interface Eth-Trunk6
+ description .: Connect to Access Switch POE 1 (Voice) :.
+ port link-type trunk
+ mode lacp
+#
+interface Eth-Trunk7
+ description .: Connect to Access Switch POE 2 (AP & CCTV) :.
+ port link-type trunk
+ mode lacp
+#
+interface Eth-Trunk8
+ description .: Connect to Fortinet Firewall 1 :.
+ port link-type trunk
+ mode lacp
+#
+interface Eth-Trunk9
+ description .: Connect to Fortinet Firewall 2 :.
+ port link-type trunk
+ mode lacp
+
+
+
+
+interface XGigabitEthernet1/0/3
+ description .: stack-port 1/1 :.
+#
+interface XGigabitEthernet1/0/4
+ description .: stack-port 1/2 :.
+#
+interface XGigabitEthernet2/0/3
+ description .: stack-port 2/1 :.
+#
+interface XGigabitEthernet2/0/4    
+ description .: stack-port 2/2 :.       
+#
+interface XGigabitEthernet3/0/3
+ description .: stack-port 3/1 :.
+#
+interface XGigabitEthernet3/0/4
+ description .: stack-port 3/2 :.
+#
+interface XGigabitEthernet4/0/3
+ description .: stack-port 4/1 :.
+#
+interface XGigabitEthernet4/0/4
+ description .: stack-port 4/2 :.
+#
+interface XGigabitEthernet5/0/3
+ description .: stack-port 5/1 :.
+#
+interface XGigabitEthernet5/0/4 
+ description .: stack-port 5/2 :.          
+#
+interface XGigabitEthernet6/0/3
+ description .: stack-port 6/1 :.
+#
+interface XGigabitEthernet6/0/4
+ description .: stack-port 6/2 :.
