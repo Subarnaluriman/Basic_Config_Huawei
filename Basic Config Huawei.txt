@@ -1,0 +1,189 @@
+clock timezone Bangkok,Hanoi,Jakarta add 07:00:00
+ntp-service unicast-server 10.23.140.11
+!
+system-view
+!
+sysname SBN_SW
+!
+dns resolve
+dns server 10.23.140.11
+dns server 10.23.140.12
+dns domain sbn.corp.co.id
+!
+snmp-agent
+snmp-agent local-engineid 800007DB031C3D2F252C70
+snmp-agent community write cipher %^%#_$ps=^<RSUP66hT7"[o(7FGG5|rf]WT+HBCBWGnBsmk<+d>X:>z)O6.75t1&)>1ePe!q~VvyjzLP6y\(%^%#
+snmp-agent community write cipher %^%#\'LhXi`+XFsQ\|2R/LDVlh8:<Znr6V('jrEsC;qG>!3{8>>}[;!,TzE*[gB+}NsSY~nsAR/A#|<=VymU%^%#
+snmp-agent sys-info contact Indonesia
+snmp-agent sys-info location Seabank
+snmp-agent sys-info version v2c v3
+!
+header login information "
+****************************************************************
+*                            WARNING!!                         *
+*                                                              *
+*      Access is restricted to Authorized Person Only          *
+*  Violators will be prosecuted in conformance with local law  *
+*                                                              *
+****************************************************************
+"
+#
+interface Vlanif 199
+ip address 10.23.199.45 255.255.255.0
+#
+ip route-static 0.0.0.0 0.0.0.0 10.23.199.1
+#
+hwtacacs-server template tacacs-server
+ hwtacacs-server authentication 10.23.141.21
+ hwtacacs-server authorization 10.23.141.21
+ hwtacacs-server accounting 10.23.141.21
+ hwtacacs-server source-ip 10.23.199.45
+ hwtacacs-server shared-key cipher BK3S3jaht3ra
+!
+aaa
+ local-user admin password irreversible-cipher Seabank@gama2022!
+ local-user admin privilege level 15
+ local-user admin service-type terminal ssh http
+ authentication-scheme hwtacacs
+  authentication-mode hwtacacs local
+ authorization-scheme hwtacacs
+  authorization-mode hwtacacs local
+ accounting-scheme hwtacacs
+  accounting-mode hwtacacs
+  accounting start-fail online
+ domain default_admin
+  authentication-scheme hwtacacs
+  accounting-scheme hwtacacs
+  authorization-scheme hwtacacs
+  hwtacacs-server tacacs-server
+ access-user remote authen-fail retry-interval 5 retry-time 6 block-time 30
+ remote-aaa-user authen-fail retry-interval  5 retry-time 6 block-time 30
+!
+ssh server timeout 120
+ssh server authentication-retries 5
+sftp server enable
+stelnet server enable
+ssh server-source -i MEth 0/0/1
+ssh user admin
+ssh user admin authentication-type password
+ssh user admin service-type all
+ssh server cipher aes256_ctr aes128_ctr
+ssh server hmac sha2_256
+ssh client cipher aes256_ctr aes128_ctr
+ssh client hmac sha2_256
+ssh server dh-exchange min-len 2048
+!
+user-interface con 0
+ authentication-mode aaa
+user-interface vty 0 4
+ authentication-mode aaa
+ idle-timeout 15 0
+user-interface vty 16 20
+ authentication-mode aaa
+ idle-timeout 15 0
+
+
+vlan 140
+ description General_Server_Farm
+vlan 141
+ description SA_Server_Farm
+ name SA_Server_Farm
+vlan 142
+ description DMZ_Server_Farm
+ name DMZ_Server_Farm
+vlan 143
+ description Dev_Server_Farm
+ name Dev_Server_Farm
+vlan 144
+ description CCTV_Access_Door
+ name CCTV_Access_Door
+vlan 145
+ description VCON
+ name VCON
+vlan 146
+ description Office_Devices
+ name Office_Devices
+vlan 148
+ description DMZ-Jumphost
+ name DMZ-Jumphost
+vlan 150
+ description BV-DR
+ name BV-DR
+vlan 161
+ description Audit
+ name Audit
+vlan 162
+ description BOD
+ name BOD
+vlan 163
+ description Business
+ name Business
+vlan 164
+ description Call_Center
+ name Call_Center
+vlan 165
+ description Compliance_Risk
+ name Compliance_Risk
+vlan 166
+ description Development
+ name Development
+vlan 167
+ description Digi_Ops
+ name Digi_Ops
+vlan 168
+ description Finance
+ name Finance
+vlan 169
+ description HR
+ name HR
+vlan 170
+ description Legal
+ name Legal
+vlan 171
+ description Operations
+ name Operations
+vlan 172
+ description Risk_Management
+ name Risk_Management
+vlan 173
+ description Meeting_Room
+ name Meeting_Room
+vlan 174
+ description Treasury
+ name Treasury
+vlan 190
+ description IT
+ name IT
+vlan 193
+ description G-Booking
+ name G-Booking
+vlan 198
+ description Wireless_Management
+ name Wireless_Management
+vlan 199
+ description Wired_Management
+ name Wired_Management
+vlan 200
+ description PABX
+ name PABX
+vlan 208
+ description CCTV_Access_Door_2
+ name CCTV_Access_Door_2
+vlan 210
+ description AML_Digiops
+ name AML_Digiops
+vlan 212
+ description KYC_Digiops
+ name KYC_Digiops
+vlan 214
+ description Fraud_Digiops
+ name Fraud_Digiops
+vlan 215
+ description Finops_Digiops
+ name Finops_Digiops
+vlan 216
+ description Cops_Digiops
+ name Cops_Digiops
+vlan 220
+ description Guest_Wifi
+ name Guest_Wifi
